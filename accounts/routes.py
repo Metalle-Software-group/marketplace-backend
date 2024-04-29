@@ -1,12 +1,13 @@
+from accounts import endpoints
 from django.urls import path
-from accounts.endpoints import LoginView, RegisterView, UserListRetrieveView
 from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 
 urlpatterns = [
+    path("<int:pk>/", endpoints.UserRetriveUpdateDestroy.as_view()),
     path("token/refresh", TokenRefreshView.as_view()),
-    path("register/", RegisterView.as_view()),
-    path("", UserListRetrieveView.as_view()),
-    path("login/", LoginView.as_view()),
+    path("register/", endpoints.RegisterView.as_view()),
+    path("login/", endpoints.LoginView.as_view()),
+    path("", endpoints.UserList.as_view()),
 ]
