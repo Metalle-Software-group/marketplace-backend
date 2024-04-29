@@ -10,7 +10,7 @@ class ProductViewSet(viewsets.GenericViewSet,  generics.ListCreateAPIView,generi
     serializer_class = ProductSerializer
     queryset = Product.objects.all()
     view_permissions = {
-        "list": {"vendor": True}
+        "list": {"vendor": False}
     }
 
     def perform_create(self, serializer):

@@ -5,28 +5,21 @@ ADDITIONAL_ROLES = [
         "vendor"
         ]
 
-# def is_customer(request, view):
-#         return is_user(request, view) and request.user.usertype == 'customer'
-
-# def is_vendor(request, view):
-#         return is_user(request, view) and request.user.usertype == 'vendor'
-
-def role_factory(role_name = "customer",):
-        return lambda request, view: is_user(request, view) and request.user.usertype == role_name
+def any_handler(request, view):
+    return True
+# function to generate handler for each and every additional roles
+def role_factory(role_name):
+        return lambda request, view: is_user(request, view) and request.user.groups.filter(name = role_name)
 
 ROLES = {
-        **{
                 # Django out-of-the-box
+                "any": any_handler,
                 'admin': is_admin,
                 'anon': is_anon,
                 'user': is_user,
-
                 # Some custom role examples
-                # 'customer': role_factory(role_name="customer"),
-                # 'vendor': role_factory(role_name="vendor"),
-                },
                 **{
                         key: role_factory(role_name = key)
                                 for key in ADDITIONAL_ROLES
-                                }
+                }
 }

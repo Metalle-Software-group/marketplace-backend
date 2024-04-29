@@ -18,10 +18,6 @@ class CustomUser(AbstractUser):
     def __repr__(self):
         return self.email
 
-# class Customer(models.Model):
-#     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
-#     # Add additional fields specific to customers
-
 
 class Vendor(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='vendor')
