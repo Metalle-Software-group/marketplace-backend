@@ -7,7 +7,7 @@ from accounts import permissions
 # Create your views here.
 class InventoryViewSet(viewsets.GenericViewSet,  generics.ListCreateAPIView,generics.RetrieveUpdateDestroyAPIView):
     view_permissions = {
-        "put,patch,destroy": {"admin_or_owner": True},
+        "put,patch,destroy,create,delete": {"admin_or_owner": True},
         "list,retrieve": {"admin_or_owner": True},
         "options": {"any": True},
     }
