@@ -10,7 +10,7 @@ class VendorSerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only = True)
-    vendor = VendorSerializer()
+    vendor = VendorSerializer(read_only = True)
 
 
     def create(self, validated_data):

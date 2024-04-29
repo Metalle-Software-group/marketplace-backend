@@ -1,17 +1,18 @@
 from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework import  generics, status,views, permissions as pm
+from rest_framework import  generics, status,views
 from rest_framework.response import Response
+from accounts.serializers import UserSerializer
 from django.contrib.auth import authenticate
+from django.contrib.auth.models import Group
 from accounts.models import CustomUser
 from rest_framework import status
-from accounts import permissions
-
-from accounts.serializers import UserSerializer
 
 class LoginView(views.APIView):
     def post(self, request):
         username = request.data.get('username')
         password = request.data.get('password')
+
+        print(password, username, "Morph")
 
         if username is None or password is None:
             return Response({'error': 'Username and password are required'}, status=status.HTTP_401_UNAUTHORIZED)
@@ -30,16 +31,27 @@ class LoginView(views.APIView):
             return Response({'error': 'Invalid credentials provided'}, status=status.HTTP_401_UNAUTHORIZED)
 
 class RegisterView(generics.CreateAPIView):
-    queryset = CustomUser.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [permissions.IsAdminOrUnAthenticatedUser]
+
+    view_permissions = {
+        "post": {"admin": True, "anon": True},
+        "options": {"any": True},
+    }
+
+    def perform_create(self, serializer):
+        user = serializer.save()
+        user_group, _ = Group.objects.get_or_create(name="customer")
+        user.groups.add(user_group)
+
 
 # Create your views here.
-class UserListRetrieveView(generics.ListCreateAPIView, generics.RetrieveUpdateAPIView):
-    permission_classes = [
-        permissions.IsAdminOrUserSelf
-        # pm.IsAuthenticated
-        ]
+class UserListRetrieveView(generics.ListAPIView, generics.RetrieveUpdateAPIView):
+    view_permissions = {
+        "options": {"any": True},
+        "patch": {"user": True},
+        "get": {"admin": True},
+        "put": {"user": True},
+    }
 
     queryset = CustomUser.objects.all()
     serializer_class = UserSerializer
