@@ -30,7 +30,7 @@ class ProductSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Product
-        fields = ["attributes", "category", "owner", "unit", "name", "description", "size", "price"]
+        fields = ["attributes", "category", "owner", "unit", "name", "description", "size", "price", "id"]
 
 class ProductCreateSerializer(serializers.ModelSerializer):
     attributes = serializers.PrimaryKeyRelatedField(queryset = Attributes.objects.all(), many = True)

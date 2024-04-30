@@ -14,6 +14,7 @@ class Unit(models.Model):
 
     class Meta:
         db_table = "units"
+        unique_together = ("name", "abbr")
 
     def __str__(self):
         return self.unit

@@ -12,11 +12,11 @@ class InventoryViewSet(viewsets.GenericViewSet,  generics.ListCreateAPIView,gene
     }
 
     serializer_class = InventoryItemSerializer
-    queryset = InventoryItem.objects.all()
+    queryset = InventoryItem.objects.all().order_by("-created_at")
 
 
     def create(self, request, *args, **kwargs):
-        serializer = InventoryItemCreateSerializer(data = {**request.data, **{"owner":self.request.user.id}})
+        serializer = InventoryItemCreateSerializer(data = {**request.data, **{"vendor":self.request.user.id}})
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
 
@@ -33,4 +33,4 @@ class InventoryViewSet(viewsets.GenericViewSet,  generics.ListCreateAPIView,gene
         return self.partial_update(request, pk)
 
     def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
+        serializer.save(vendor=self.request.user)

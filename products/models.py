@@ -32,7 +32,7 @@ class Product(models.Model):
     attributes = models.ManyToManyField(Attributes, related_name="product_attributes")
     owner = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     unit = models.ForeignKey(Unit, on_delete=models.CASCADE)
-    category = models.ManyToManyField(Category, null=True)
+    category = models.ManyToManyField(Category)
 
     class Meta:
         db_table = "products"

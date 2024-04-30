@@ -5,7 +5,7 @@ from products.models import Product
 # Create your views here.
 class ProductViewSet(viewsets.GenericViewSet,  generics.ListCreateAPIView,generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ProductSerializer
-    queryset = Product.objects.all()
+    queryset = Product.objects.all().order_by("-created_at")
 
     view_permissions = {
         "put,patch,delete,destroy,create,post,update,partial_update": {"admin_or_owner": True},
