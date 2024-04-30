@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from accounts.serializers import UserSerializer
 from categories.serializers import CategorySerializer
 
 from products.models import Attributes, Product
@@ -11,17 +12,14 @@ class ProductAttrSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Attributes
-        # fields = ["id", "product_name", "description", "price", "created_at", "updated_at", "owner"]
-        # fields = "__all__"
         exclude=["added_by", "added_on"]
 
 class ProductSerializer(serializers.ModelSerializer):
-    # owner = UserSerializer()
-    # attributes = ProductAttrSerializer(many = True)
-    # category = CategorySerializer(many = False)
-    # unit = UnitSerializer(many = False)
+    attributes = ProductAttrSerializer(read_only = True,many = True)
+    category = CategorySerializer(read_only = True, many = True)
+    owner = UserSerializer(read_only = True, many = False)
+    unit = UnitSerializer(read_only = True, many = False)
 
     class Meta:
         model = Product
-        exclude=["owner"]
-        depth = 1
+        fields = ["attributes", "category", "owner", "unit", "name", "description", "size", "price"]

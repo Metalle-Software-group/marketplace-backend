@@ -6,23 +6,23 @@ from units.models import Unit
 
 # Create your models here.
 class Product(models.Model):
-    product_name = models.CharField(max_length=100, null=False)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     description = models.TextField(null= True, default="")
+    name = models.CharField(max_length=100, null=False)
     size = models.IntegerField(default=0, null = False)
-    price = models.FloatField(default=0)
 
     # relationships
-    category = models.ForeignKey(Category, related_name='category', on_delete=models.CASCADE)
-    owner = models.ForeignKey(CustomUser, related_name='products', on_delete=models.CASCADE)
-    unit = models.ForeignKey(Unit, related_name='units', on_delete=models.CASCADE)
+    category = models.ManyToManyField(Category, null=True)
+    owner = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    unit = models.ForeignKey(Unit, on_delete=models.CASCADE)
 
     class Meta:
         db_table = "products"
 
     def __str__(self):
-        return self.product_name
+        return self.name
 
 
 class Attributes(models.Model):
