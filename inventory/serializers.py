@@ -1,9 +1,9 @@
-from rest_framework import serializers
+from accounts.models import CustomUser
 from accounts.serializers import UserSerializer
+from rest_framework import serializers
 
-from inventory.models import InventoryItem
-from products.models import Product
 from products.serializers import ProductSerializer
+from inventory.models import InventoryItem
 from units.serializers import UnitSerializer
 
 class InventoryItemSerializer(serializers.ModelSerializer):
@@ -13,4 +13,14 @@ class InventoryItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = InventoryItem
-        fields = ["vendor", "product", "unit", "price", "quantity"]
+        fields = ["vendor", "product", "unit", "cost", "quantity"]
+
+
+
+class InventoryItemCreateSerializer(serializers.ModelSerializer):
+    product = serializers.PrimaryKeyRelatedField(queryset = InventoryItem.objects.all())
+    vendor = serializers.PrimaryKeyRelatedField(queryset = CustomUser.objects.all())
+
+    class Meta:
+        model = InventoryItem
+        fields = ["vendor", "product", "cost", "quantity"]

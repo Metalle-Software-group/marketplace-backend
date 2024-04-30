@@ -23,4 +23,4 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         depth = 1
-        exclude = ["is_staff", "is_superuser", "groups", "user_permissions"]
+        exclude = ["is_staff", "is_superuser", "groups", "user_permissions","date_joined"]

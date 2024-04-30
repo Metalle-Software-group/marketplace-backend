@@ -6,7 +6,7 @@ from units.models import Unit
 
 # Create your models here.
 class InventoryItem(models.Model):
-    price = models.DecimalField(max_digits=10, decimal_places=2)
+    cost = models.DecimalField(max_digits=10, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
     quantity = models.IntegerField(default=0, null = False)
     updated_at = models.DateTimeField(auto_now=True)

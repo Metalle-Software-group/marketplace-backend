@@ -7,6 +7,6 @@ class UnitSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Unit
-        fields = "__all__"
+        exclude = ["created_on", "created_by"]
 
         # exclude = ["created_by", "created_on"]
