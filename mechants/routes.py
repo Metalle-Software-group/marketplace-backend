@@ -4,8 +4,9 @@ from django.urls import path
 
 router = routers.DefaultRouter()
 
+router.register(r"<int:pk>/", endpoints.AlterVendorView, basename="mechants-alter")
 router.register(r"", endpoints.VendorListRetrieveView, basename="mechants")
 
 urlpatterns =  [
-    path(r"create/", endpoints.RegisterVendorView.as_view())
+    path(r"create/", endpoints.RegisterVendorView.as_view()),
 ] + router.urls

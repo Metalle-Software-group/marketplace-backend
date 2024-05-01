@@ -1,38 +1,65 @@
-from accounts.models import CustomUser, Vendor
-from rest_framework.response import Response
-from rest_framework import generics,viewsets
-from accounts.serializers import UserSerializer
+from accounts.serializers import VendorUserCreateSerializer, VendorUserSerializer
+from rest_framework import generics,viewsets,status, response
 from marketplace.roles import VENDOR_ROLE
-from django.contrib.auth.models import Group
+from accounts.models import CustomUser
 
 
 # Create your views here.
 class RegisterVendorView(generics.CreateAPIView):
-    serializer_class = UserSerializer
+    serializer_class = VendorUserCreateSerializer
 
     view_permissions = {
         "post": {"admin": True, "anon": True},
         "options": {"any": True},
     }
 
-    def perform_create(self, serializer):
-        user = serializer.save()
-        user_group, _ = Group.objects.get_or_create(name=VENDOR_ROLE)
-        user.groups.add(user_group)
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data = request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+
+        return response.Response(
+            serializer.data,
+            status = status.HTTP_201_CREATED,
+            headers = self.get_success_headers(serializer.data),
+            )
 
 
-class VendorListRetrieveView(viewsets.GenericViewSet,generics.ListCreateAPIView,generics.RetrieveUpdateDestroyAPIView):
+class AlterVendorView(viewsets.GenericViewSet,generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = VendorUserCreateSerializer
+
     view_permissions = {
-        "get,list,put,create,patch,delete": {"admin_or_owner": True, "any": True},
+        "put,patch,delete,destroy,retrieve": {"admin_or_owner": True},
         "options": {"any": True},
-
     }
 
-    queryset = CustomUser.objects.filter(groups__name = VENDOR_ROLE)
-    serializer_class = UserSerializer
-    lookup_field = "pk"
+    queryset = CustomUser.objects.filter(vendor__isnull = False)
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data = request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+
+        return response.Response(
+            serializer.data,
+            status = status.HTTP_201_CREATED,
+            headers = self.get_success_headers(serializer.data),
+            )
+
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
         serializer = self.get_serializer(instance)
-        return Response(serializer.data)
+        return response.Response(serializer.data)
+
+
+class VendorListRetrieveView(viewsets.GenericViewSet,generics.ListAPIView):
+    view_permissions = {
+        "get,list": {"admin": True},
+        "options": {"any": True},
+
+    }
+
+    queryset = CustomUser.objects.filter(groups__name = VENDOR_ROLE, vendor__isnull = False)
+    serializer_class = VendorUserSerializer
+    lookup_field = "pk"

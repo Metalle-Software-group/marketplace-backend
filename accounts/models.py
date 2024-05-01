@@ -22,7 +22,14 @@ class CustomUser(AbstractUser):
 class Vendor(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='vendor')
     company_name = models.CharField(max_length=100, null=False)
-    # phone = models.CharField(max_length=100, null=False)
+    address = models.CharField(max_length=100, null=False)
+    phone = models.CharField(max_length=100, null=False)
+
+    def __str__(self):
+        return self.company_name
+
+    def __repr__(self):
+        return self.company_name
 
     class Meta:
         db_table = "vendors"

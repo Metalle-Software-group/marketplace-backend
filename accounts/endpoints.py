@@ -57,7 +57,7 @@ class UserListRetrieveView(viewsets.GenericViewSet,generics.ListAPIView, generic
         "get": {"admin": True},
     }
 
-    queryset = CustomUser.objects.all()
+    queryset = CustomUser.objects.filter(vendor__isnull = True)
     serializer_class = UserSerializer
     lookup_field = "pk"
 
