@@ -35,11 +35,15 @@ class AlterInventoryViewSet(viewsets.GenericViewSet, generics.RetrieveUpdateDest
         "options": {"any": True},
     }
 
-    serializer_class = InventoryItemSerializer
+    serializer_class = InventoryItemCreateSerializer
     queryset = InventoryItem.objects.all().order_by("-created_at")
 
     def is_admin_check(self, request):
         return IsAdminUser().has_permission(request, self)
+
+    def retrieve(self, request, *args, **kwargs):
+        self.serializer_class = InventoryItemSerializer
+        return super().retrieve(request, *args, **kwargs)
 
     def put(self, request, pk=None):
         return self.update(request, pk)

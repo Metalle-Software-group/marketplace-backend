@@ -1,6 +1,7 @@
 from accounts.serializers import VendorUserCreateSerializer, VendorUserSerializer
 from rest_framework import generics,viewsets,status, response
-from marketplace.roles import VENDOR_ROLE
+from marketplace import roles
+from marketplace.roles import ADDITIONAL_ROLES, ROLES, VENDOR_ROLE
 from accounts.models import CustomUser
 
 
@@ -25,15 +26,16 @@ class RegisterVendorView(generics.CreateAPIView):
             )
 
 
-class AlterVendorView(viewsets.GenericViewSet,generics.RetrieveUpdateDestroyAPIView):
+class AlterVendorView(viewsets.GenericViewSet, generics.RetrieveUpdateDestroyAPIView):
     serializer_class = VendorUserCreateSerializer
 
     view_permissions = {
-        "put,patch,delete,destroy,retrieve": {"admin_or_owner": True},
+        "put,patch,delete,destroy,retrieve,get,partial_update": {"any": True},
         "options": {"any": True},
     }
 
-    queryset = CustomUser.objects.filter(vendor__isnull = False)
+    queryset = CustomUser.objects.filter(vendor__isnull = False, groups__name = VENDOR_ROLE)
+    lookup_field = "pk"
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data = request.data)
@@ -46,11 +48,16 @@ class AlterVendorView(viewsets.GenericViewSet,generics.RetrieveUpdateDestroyAPIV
             headers = self.get_success_headers(serializer.data),
             )
 
-
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
-        serializer = self.get_serializer(instance)
+        serializer = VendorUserSerializer(instance)
         return response.Response(serializer.data)
+
+    def put(self, request, pk=None):
+        return self.update(request, pk)
+
+    def patch(self, request, pk=None):
+        return self.partial_update(request, pk)
 
 
 class VendorListRetrieveView(viewsets.GenericViewSet,generics.ListAPIView):

@@ -4,8 +4,6 @@ from marketplace.roles import VENDOR_ROLE
 from django.contrib.auth.models import Group
 from rest_framework import serializers
 
-
-
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only = True)
 
@@ -18,7 +16,6 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         exclude = ["is_staff", "is_superuser", "groups", "user_permissions","date_joined"]
-
 
 class VendorSerializer(serializers.ModelSerializer):
     class Meta:
@@ -43,8 +40,6 @@ class VendorUserCreateSerializer(serializers.ModelSerializer):
         user.groups.add(vendor_group)
 
         return Vendor.objects.create(user=user, **validated_data)
-
-
 
     class Meta:
         fields = ["user", "company_name", "address", "phone"]

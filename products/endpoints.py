@@ -25,7 +25,7 @@ class CreateProductViewset(generics.CreateAPIView):
 
 
 # Create your views here.
-class ProductViewSet(viewsets.GenericViewSet,  generics.ListAPIView,generics.RetrieveUpdateDestroyAPIView):
+class ProductViewSet(viewsets.GenericViewSet,  generics.ListAPIView, generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ProductSerializer
     queryset = Product.objects.all().order_by("-created_at")
 

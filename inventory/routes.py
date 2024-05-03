@@ -4,7 +4,7 @@ from inventory import endpoints
 
 routes = routers.DefaultRouter()
 
-routes.register(r"<pk:int>/", endpoints.AlterInventoryViewSet, basename="alter-inventory")
+routes.register(r"", endpoints.AlterInventoryViewSet, basename="alter-inventory")
 routes.register(r"", endpoints.InventoryListViewSet, basename="list-inventory")
 
 

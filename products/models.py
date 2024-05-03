@@ -16,6 +16,7 @@ class Attributes(models.Model):
 
     class Meta:
         db_table="product_attrs"
+        unique_together = ("attribute", "value")
 
 
 # Create your models here.

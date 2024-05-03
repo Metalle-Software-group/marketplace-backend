@@ -1,8 +1,10 @@
+from rest_framework import routers
+from categories import endpoint
 from django.urls import path
 
-from categories import endpoint
+routes = routers.DefaultRouter()
 
+routes.register("", endpoint.CategoryViewset, basename="categories")
 
 urlpatterns = [
-    path('', endpoint.CategoryViewset.as_view())
-]
+] + routes.urls

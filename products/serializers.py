@@ -15,7 +15,7 @@ class ProductAttrSerializer(serializers.ModelSerializer):
         exclude=["added_by", "added_on"]
 
 class ProductAttrCreateSerializer(serializers.ModelSerializer):
-    added_by = serializers.PrimaryKeyRelatedField(queryset = Attributes.objects.all(), many = False)
+    added_by = serializers.PrimaryKeyRelatedField(queryset = CustomUser.objects.all(), many = False)
 
     class Meta:
         model = Attributes

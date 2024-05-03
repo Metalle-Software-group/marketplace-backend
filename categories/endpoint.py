@@ -1,10 +1,11 @@
-from rest_framework import generics
 from accounts.permissions import IsAdminOrVendorOrReadOnly
-
-from categories.models import Category
 from categories.serializers import CategorySerializer
+from rest_framework import generics,viewsets
+from categories.models import Category
+
 # Create your views here.
 class CategoryViewset(
+    viewsets.GenericViewSet,
     generics.ListCreateAPIView,
     generics.RetrieveUpdateDestroyAPIView,
     ):
