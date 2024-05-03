@@ -34,6 +34,7 @@ class ProductViewSet(viewsets.GenericViewSet,  generics.ListAPIView, generics.Re
         "list,retrieve": {"any": True},
         "options": {"any": True},
     }
+
     def put(self, request, pk=None):
         return self.update(request, pk)
 
