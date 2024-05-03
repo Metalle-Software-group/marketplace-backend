@@ -1,8 +1,13 @@
-from inventory.endpoints import InventoryViewSet
+from django.urls import path
 from rest_framework import routers
+from inventory import endpoints
 
 routes = routers.DefaultRouter()
 
-routes.register(r"", InventoryViewSet, basename="inventory")
+routes.register(r"<pk:int>/", endpoints.AlterInventoryViewSet, basename="alter-inventory")
+routes.register(r"", endpoints.InventoryListViewSet, basename="list-inventory")
 
-urlpatterns = routes.urls
+
+urlpatterns = [
+    path("create/", endpoints.CreateInventoryViewset.as_view())
+] + routes.urls

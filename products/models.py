@@ -30,7 +30,7 @@ class Product(models.Model):
 
     # relationships
     attributes = models.ManyToManyField(Attributes, related_name="product_attributes")
-    owner = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    vendor = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     unit = models.ForeignKey(Unit, on_delete=models.CASCADE)
     category = models.ManyToManyField(Category)
 

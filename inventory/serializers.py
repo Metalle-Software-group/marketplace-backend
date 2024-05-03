@@ -5,6 +5,7 @@ from products.models import Product
 
 from products.serializers import ProductSerializer
 from inventory.models import InventoryItem
+from units.models import Unit
 from units.serializers import UnitSerializer
 
 class InventoryItemSerializer(serializers.ModelSerializer):
@@ -21,7 +22,8 @@ class InventoryItemSerializer(serializers.ModelSerializer):
 class InventoryItemCreateSerializer(serializers.ModelSerializer):
     vendor = serializers.PrimaryKeyRelatedField(queryset = CustomUser.objects.all())
     product = serializers.PrimaryKeyRelatedField(queryset = Product.objects.all())
+    unit = serializers.PrimaryKeyRelatedField(queryset = Unit.objects.all())
 
     class Meta:
         model = InventoryItem
-        fields = ["vendor", "product", "cost", "quantity", "id"]
+        fields = ["vendor", "product", "unit", "cost", "quantity", "id"]

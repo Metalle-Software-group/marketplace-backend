@@ -11,6 +11,5 @@ urlpatterns =  [
     path('coupons/', include('coupons.routes')),
     path('reports/', include('reports.routes')),
     path('orders/', include('orders.routes')),
-    path('units/', include('units.routes')),
     path('admin/', admin.site.urls)
     ]

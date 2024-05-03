@@ -2,6 +2,8 @@ from accounts.models import CustomUser
 from products.models import Product
 from django.db import models
 
+from units.models import Unit
+
 
 # Create your models here.
 class InventoryItem(models.Model):
@@ -13,6 +15,7 @@ class InventoryItem(models.Model):
     # relationships
     vendor = models.ForeignKey(CustomUser, related_name = "inventory", on_delete=models.CASCADE)
     product = models.ForeignKey(Product, related_name = "inventory", on_delete=models.CASCADE)
+    unit = models.ForeignKey(Unit, on_delete=models.CASCADE, related_name = "units")
 
     def __str__(self):
         return self.product.name

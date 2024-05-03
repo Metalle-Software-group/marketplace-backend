@@ -1,15 +1,14 @@
 from django.urls import include, path
 from rest_framework import routers
-
-from products.endpoints import ProductViewSet
-
-
+from products import endpoints
 
 router = routers.DefaultRouter()
 
-router.register(r"", ProductViewSet, basename="products")
-
+router.register('attributes', endpoints.AttributesViewSet, basename = "attributes")
+router.register(r"", endpoints.ProductViewSet, basename = "products")
 
 urlpatterns = [
+    path('attributes/create/', endpoints.CreateAttributesViewset.as_view()),
+    path(r"create/", endpoints.CreateProductViewset.as_view()),
     path('units/', include('units.routes')),
-]+ router.urls
+] + router.urls

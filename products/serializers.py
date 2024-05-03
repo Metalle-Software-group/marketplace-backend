@@ -15,7 +15,7 @@ class ProductAttrSerializer(serializers.ModelSerializer):
         exclude=["added_by", "added_on"]
 
 class ProductAttrCreateSerializer(serializers.ModelSerializer):
-    added_by = serializers.PrimaryKeyRelatedField(queryset = Attributes.objects.all())
+    added_by = serializers.PrimaryKeyRelatedField(queryset = Attributes.objects.all(), many = False)
 
     class Meta:
         model = Attributes
@@ -25,19 +25,19 @@ class ProductAttrCreateSerializer(serializers.ModelSerializer):
 class ProductSerializer(serializers.ModelSerializer):
     attributes = ProductAttrSerializer(read_only = True, many = True)
     category = CategorySerializer(read_only = True, many = True)
-    owner = UserSerializer(read_only = True, many = False)
+    vendor = UserSerializer(read_only = True, many = False)
     unit = UnitSerializer(read_only = True, many = False)
 
     class Meta:
         model = Product
-        fields = ["attributes", "category", "owner", "unit", "name", "description", "size", "price", "id"]
+        fields = ["attributes", "category", "vendor", "unit", "name", "description", "size", "price", "id"]
 
 class ProductCreateSerializer(serializers.ModelSerializer):
     attributes = serializers.PrimaryKeyRelatedField(queryset = Attributes.objects.all(), many = True)
     category = serializers.PrimaryKeyRelatedField(queryset = Category.objects.all(), many = True)
-    owner = serializers.PrimaryKeyRelatedField(queryset = CustomUser.objects.all())
+    vendor = serializers.PrimaryKeyRelatedField(queryset = CustomUser.objects.all())
     unit = serializers.PrimaryKeyRelatedField(queryset = Unit.objects.all())
 
     class Meta:
         model = Product
-        fields = ["attributes", "category", "owner", "unit", "name", "description", "size", "price", ]
+        fields = ["attributes", "category", "vendor", "unit", "name", "description", "size", "price", ]
