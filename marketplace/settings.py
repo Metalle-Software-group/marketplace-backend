@@ -147,6 +147,14 @@ AUTH_USER_MODEL = 'accounts.CustomUser'
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
+
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+
+        # disable the below rendere in production
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ),
+
      'DEFAULT_AUTHENTICATION_CLASSES': [
         # Choose appropriate authentication class(es) here
         # 'rest_framework.authentication.TokenAuthentication',  # For session-based

@@ -15,7 +15,7 @@ class ORDER_STATUS(Enum):
 
 STATUS_CHOICES = [(member.value, member.name) for member in ORDER_STATUS]
 class Orders(models.Model):
-    total = models.DecimalField(max_digits=10, decimal_places=2, default = 0)
+    total_cost = models.DecimalField(max_digits=10, decimal_places=2, default = 0)
     order_date = models.DateField(auto_now_add = True, null = False)
 
     status = models.CharField(
@@ -49,3 +49,12 @@ class OrderItem(models.Model):
 
     class Meta:
         db_table = "order_items"
+
+
+
+class Cart(models.Model):
+    customer = models.ForeignKey(CustomUser, related_name = "cart", on_delete = models.CASCADE)
+    # order_items = models.ManyToManyField(OrderItem)
+
+    class Meta:
+        db_table = 'cart'

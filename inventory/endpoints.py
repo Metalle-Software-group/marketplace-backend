@@ -31,7 +31,7 @@ class CreateInventoryViewset(generics.CreateAPIView):
 
 class AlterInventoryViewSet(viewsets.GenericViewSet, generics.RetrieveUpdateDestroyAPIView):
     view_permissions = {
-        "retrieve,put,patch,delete,destroy,update,partial_update": {"admin_or_owner": True},
+        "retrieve,put,patch,delete,destroy,update,partial_update": {"admin_or_vendor": True},
         "options": {"any": True},
     }
 
