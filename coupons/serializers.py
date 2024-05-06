@@ -1,11 +1,9 @@
-from accounts.models import CustomUser
 from accounts.serializers import VendorSerializer
-from categories.serializers import CategorySerializer
-from rest_framework import serializers
-from coupons.models import Coupon
-from marketplace.roles import VENDOR_ROLE
-from products.models import Product
 from products.serializers import ProductSerializer
+from rest_framework import serializers
+from products.models import Product
+from accounts.models import Vendor
+from coupons.models import Coupon
 
 
 class CouponSerializer(serializers.ModelSerializer):
@@ -13,17 +11,14 @@ class CouponSerializer(serializers.ModelSerializer):
     product = ProductSerializer(many = False)
     class Meta:
         model = Coupon
-        exclude=["added_on"]
-
+        fields = ["vendor","product", "discount", "valid_from", "valid_until", "code", "max_uses", "id","curr_uses"]
 
 class CouponCreateSerializer(serializers.ModelSerializer):
     vendor = serializers.PrimaryKeyRelatedField(
-        queryset = CustomUser.objects.filter(
-            vendor__isnull = False,
-              groups__name = VENDOR_ROLE
-              ),
-              many = False
-              )
+        queryset = Vendor.objects.all(),
+        many = False
+        )
+
     product = serializers.PrimaryKeyRelatedField(
         queryset = Product.objects.all(),
         many = False
@@ -31,4 +26,4 @@ class CouponCreateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Coupon
-        fields = ["vendor","product", "discount", "valid_from", "valid_until", "code", "max_uses"]
+        fields = ["vendor","product", "discount", "valid_from", "valid_until", "code", "max_uses", "id","curr_uses"]

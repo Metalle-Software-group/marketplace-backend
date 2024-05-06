@@ -1,5 +1,5 @@
 from django.db import models
-from accounts.models import CustomUser
+from accounts.models import CustomUser, Vendor
 
 from products.models import Product
 
@@ -9,12 +9,12 @@ class Coupon(models.Model):
     valid_from = models.DateTimeField(auto_now_add = True, null = False)
     valid_until = models.DateTimeField(auto_now_add = True, null = False)
     added_on = models.DateTimeField(auto_now_add = True, null = False)
+    curr_uses = models.IntegerField(null = False, default = 0)
     code = models.CharField(max_length = 255,null = False)
     max_uses = models.IntegerField(null = False)
-    curr_uses = models.IntegerField(null = False)
 
     # relationships
-    vendor = models.ForeignKey(CustomUser, related_name="coupon_vendor", on_delete = models.CASCADE)
+    vendor = models.ForeignKey(Vendor, related_name="coupon_vendor", on_delete = models.CASCADE)
     product = models.ForeignKey(Product, related_name="coupon", on_delete = models.CASCADE)
 
 

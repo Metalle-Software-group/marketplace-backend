@@ -21,7 +21,9 @@ class CustomUser(AbstractUser):
 
 class Vendor(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='vendor')
+
     company_name = models.CharField(max_length=100, null=False)
+    company_website = models.CharField(max_length=100, null=True)
     address = models.CharField(max_length=100, null=False)
     phone = models.CharField(max_length=100, null=False)
 

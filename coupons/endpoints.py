@@ -16,7 +16,7 @@ class CreateCouponViewset(generics.CreateAPIView):
         serializer = self.get_serializer( data = request.data
                                          if request.user.is_superuser else {
                                              **request.data,
-                                             "vendor": self.request.user.id
+                                             "vendor": self.request.user.vendor.id
                                              }
                                              )
 
@@ -35,9 +35,9 @@ class CouponViewSet(viewsets.GenericViewSet,  generics.ListAPIView,generics.Retr
     queryset = Coupon.objects.all()
 
     view_permissions = {
-        "put,patch,delete,destroy,update,partial_update": {"admin_or_owner": True},
+        "put,patch,delete,destroy,update,partial_update": {"admin": True},
         "list,retrieve,options": {"any": True},
     }
 
     def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
+        serializer.save(vendor=self.request.user)
