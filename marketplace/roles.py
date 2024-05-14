@@ -25,7 +25,7 @@ class IsOwnerOrReadOnly(BasePermission):
          except (AttributeError, MultipleObjectsReturned):
               return False
 
-         return object.vendor == request.user
+         return obj.vendor == request.user
 
     def has_permission(self, request, view):
         return request.method in SAFE_METHODS or (

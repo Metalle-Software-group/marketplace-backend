@@ -37,7 +37,12 @@ class VendorCreateSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         with transaction.atomic():
             user_data = validated_data.pop("user")
-            user_serializer = UserSerializer(data = user_data)
+            user_serializer = UserSerializer(
+                data = {
+                    **user_data,
+                    "is_active": False
+                    }
+            )
 
             user_serializer.is_valid(raise_exception=True)
             user = user_serializer.save()

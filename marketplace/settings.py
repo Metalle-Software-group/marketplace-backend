@@ -44,7 +44,6 @@ INSTALLED_APPS = [
     'rest_framework_roles',
     "django_daraja",
     # dev apps
-    "inventory",
     "approutes",
     "categories",
     "mechants",

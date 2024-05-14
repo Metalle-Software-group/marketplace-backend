@@ -1,16 +1,12 @@
 from django.contrib import admin
 
-from products.models import Attributes, Product
+from products.models import Product
 
 # Register your models here.
 class AdminModel(admin.ModelAdmin):
-    list_display = ['name', 'description', 'price', 'created_at', 'updated_at', 'vendor']
+    list_display = ['name', 'description', 'brand', 'created_at', 'updated_at', 'vendor', "unit"]
 
-
-class AttributeAdminModel(admin.ModelAdmin):
-    list_display = ['attribute', 'value']
-
-
-admin.site.register(Attributes, AttributeAdminModel)
+    class Meta:
+        model = Product
 
 admin.site.register(Product, AdminModel)
