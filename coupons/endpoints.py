@@ -1,10 +1,10 @@
 from coupons.serializers import CouponCreateSerializer, CouponSerializer
-from rest_framework import viewsets,generics, response, status
+from rest_framework import viewsets, generics, response, status
 from coupons.models import Coupon
 
 
 class CreateCouponViewset(generics.CreateAPIView):
-    queryset = Coupon.objects.all().order_by("-added_on")
+    # queryset = Coupon.objects.all().order_by("-added_on")
     serializer_class = CouponCreateSerializer
 
     view_permissions = {
@@ -13,31 +13,41 @@ class CreateCouponViewset(generics.CreateAPIView):
     }
 
     def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer( data = request.data
+        serializer = self.get_serializer(data=request.data
                                          if request.user.is_superuser else {
                                              **request.data,
                                              "vendor": self.request.user.vendor.id
-                                             }
-                                             )
+                                         }
+                                         )
 
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
 
         return response.Response(
             serializer.data,
-            status = status.HTTP_201_CREATED,
-            headers = self.get_success_headers(serializer.data),
-            )
+            status=status.HTTP_201_CREATED,
+            headers=self.get_success_headers(serializer.data),
+        )
 
 
-class CouponViewSet(viewsets.GenericViewSet,  generics.ListAPIView,generics.RetrieveUpdateDestroyAPIView):
+class CouponViewSet(viewsets.GenericViewSet,  generics.ListAPIView, generics.RetrieveUpdateDestroyAPIView):
     serializer_class = CouponSerializer
     queryset = Coupon.objects.all()
 
     view_permissions = {
-        "put,patch,delete,destroy,update,partial_update": {"admin": True},
-        "list,retrieve,options": {"any": True},
+        "list,retrieve,put,patch,delete,destroy,update,partial_update": {"admin_or_vendor": True},
+        "options": {"any": True},
     }
+
+    def get_queryset(self):
+        queryset = self.queryset
+
+        if self.request.user.is_authenticated and self.request.user.is_superuser:
+            return queryset
+
+        return queryset.filter(
+            vendor=self.request.user.vendor
+        )
 
     def perform_create(self, serializer):
         serializer.save(vendor=self.request.user)

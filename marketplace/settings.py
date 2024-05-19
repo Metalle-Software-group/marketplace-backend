@@ -43,13 +43,17 @@ INSTALLED_APPS = [
     "rest_framework.authtoken",
     'rest_framework_roles',
     "django_daraja",
+
     # dev apps
+    "advertisement",
     "approutes",
+    "attributes",
     "categories",
     "mechants",
     "payments",
     "accounts",
     "products",
+    "variants",
     "reviews",
     "coupons",
     "reports",
@@ -154,11 +158,11 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.BrowsableAPIRenderer',
     ),
 
-     'DEFAULT_AUTHENTICATION_CLASSES': [
+    'DEFAULT_AUTHENTICATION_CLASSES': [
         # Choose appropriate authentication class(es) here
         # 'rest_framework.authentication.TokenAuthentication',  # For session-based
         'rest_framework.authentication.SessionAuthentication',
-         "rest_framework.authentication.TokenAuthentication",
+        "rest_framework.authentication.TokenAuthentication",
         'rest_framework_simplejwt.authentication.JWTAuthentication',  # For token-based
     ],
 }
@@ -205,15 +209,12 @@ SIMPLE_JWT = {
 
 # custom roles
 REST_FRAMEWORK_ROLES = {
-  'ROLES': 'marketplace.roles.ROLES',
-  'SKIP_MODULES': [
-    'django.*',
-    'marketplace.myapp55.*',
-  ],
+    'ROLES': 'marketplace.roles.ROLES',
+    'SKIP_MODULES': [
+        'django.*',
+        'marketplace.myapp55.*',
+    ],
 }
-
-
-
 
 
 # mpesa credentials
@@ -227,7 +228,7 @@ MPESA_ENVIRONMENT = 'sandbox'
 MPESA_CONSUMER_KEY = 'UduEvwBG62FAFwHG1rbP2UACLl3JzUJ1dCmiBWCEGwe4VVIY'
 MPESA_CONSUMER_SECRET = 'XPRT1s6iokPTYnCHAByU8v9YzHL0FEZNcsoCqkXT5NFhT6OgajgHXwvWPUARZ2GW'
 
-#Shortcode to use for transactions. For sandbox  use the Shortcode 1 provided on test credentials page
+# Shortcode to use for transactions. For sandbox  use the Shortcode 1 provided on test credentials page
 
 MPESA_SHORTCODE = 'mpesa_shortcode'
 

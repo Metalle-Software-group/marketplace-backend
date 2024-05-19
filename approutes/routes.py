@@ -1,7 +1,7 @@
 from django.urls import include, path
 from django.contrib import admin
 
-urlpatterns =  [
+urlpatterns = [
     path('payments/', include('payments.routes')),
     path('mechants/', include('mechants.routes')),
     path('accounts/', include('accounts.routes')),
@@ -9,4 +9,4 @@ urlpatterns =  [
     path('reports/', include('reports.routes')),
     path('orders/', include('orders.routes')),
     path('admin/', admin.site.urls)
-    ]
+]
